@@ -70,7 +70,7 @@ class SpeedtestCollector():
         res = self.speedtest.results.dict()
 
         # Speedtest Distance Between Client & Server
-        labels['distance'] = res['server']['d']
+        labels['distance'] = str(res['server']['d'])
 
         # Speedtest Server Latitude
         labels['server_latitude'] =  res['server']['lat']
