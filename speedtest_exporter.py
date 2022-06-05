@@ -31,14 +31,6 @@ except ValueError:
     logging.error("SPEEDTEST_EXPORTER_LOGLEVEL invalid !")
     sys.exit(1)
 
-# Check for SPEEDTEST_HOST
-#if os.environ.get('SPEEDTEST_HOST') is not None and os.environ.get('SPEEDTEST_HOST') != '':
-#    SPEEDTEST_HOST = os.environ.get('SPEEDTEST_HOST')
-#else:
-#    logging.error("SPEEDTEST_HOST must be set and not empty !")
-#    sys.exit(1)
-
-# Check for SPEEDTEST_EXPORTER_PORT
 try:
     SPEEDTEST_EXPORTER_PORT = int(os.environ.get('SPEEDTEST_EXPORTER_PORT', '8123'))
 except ValueError:
@@ -78,7 +70,7 @@ class SpeedtestCollector():
         res = self.speedtest.results.dict()
 
         # Speedtest Distance Between Client & Server
-        labels['distance'] = res['server']['d']
+        labels['distance'] = str(res['server']['d'])
 
         # Speedtest Server Latitude
         labels['server_latitude'] =  res['server']['lat']
