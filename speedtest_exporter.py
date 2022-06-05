@@ -7,8 +7,8 @@ import logging
 import os
 import sys
 import time
-import speedtest
 from collections import defaultdict
+import speedtest
 from prometheus_client.core import REGISTRY, Metric
 from prometheus_client import start_http_server, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
 
