@@ -4,8 +4,9 @@ ENV SPEEDTEST_HOST=""
 ENV SPEEDTEST_EXPORTER_PORT=8123
 ENV SPEEDTEST_EXPORTER_LOGLEVEL='INFO'
 ENV SPEEDTEST_EXPORTER_NAME='speedtest-exporter'
-COPY requirements.txt /
-COPY entrypoint.sh /
+COPY --chmod=755 requirements.txt /
+COPY --chmod=755 entrypoint.sh /
+ADD --chmod=755 https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz /usr/local/bin
 ENV VIRTUAL_ENV="/speedtest-exporter"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN apk add --no-cache --update \
@@ -16,8 +17,7 @@ RUN apk add --no-cache --update \
     && rm -rf \
         /root/.cache \
         /tmp/* \
-        /var/cache/* \
-    && chmod +x /entrypoint.sh
+        /var/cache/*
 COPY speedtest_exporter.py ${VIRTUAL_ENV}
 WORKDIR ${VIRTUAL_ENV}
 HEALTHCHECK CMD nc -vz localhost ${SPEEDTEST_EXPORTER_PORT} || exit 1
