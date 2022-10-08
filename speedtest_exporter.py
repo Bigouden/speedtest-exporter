@@ -117,7 +117,11 @@ class SpeedtestCollector():
     def run_speedtest(self):
         ''' Run Speedtest & Return JSON Results or Exit '''
         try:
-            speedtest_cmd = check_output(['speedtest', '-f', 'json'],
+            speedtest_cmd = check_output(['speedtest',
+                                          '--accept-license', 
+                                          '--accept-gdpr', 
+                                          '-f',
+                                          'json'],
                                          stderr=STDOUT,
                                          text=True)
             return loads(speedtest_cmd)
