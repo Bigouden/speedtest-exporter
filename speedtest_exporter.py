@@ -12,7 +12,6 @@ from collections import defaultdict
 from prometheus_client.core import REGISTRY, Metric
 from prometheus_client import start_http_server, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
 
-
 # Exporter Name Definition
 SPEEDTEST_EXPORTER_NAME = os.environ.get('SPEEDTEST_EXPORTER_NAME',
                                          'speedtest-exporter')
@@ -118,8 +117,8 @@ class SpeedtestCollector():
         ''' Run Speedtest & Return JSON Results or Exit '''
         try:
             speedtest_cmd = check_output(['speedtest',
-                                          '--accept-license', 
-                                          '--accept-gdpr', 
+                                          '--accept-license',
+                                          '--accept-gdpr',
                                           '-f',
                                           'json'],
                                          stderr=STDOUT,
