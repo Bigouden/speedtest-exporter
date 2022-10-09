@@ -177,7 +177,7 @@ class SpeedtestCollector():
 
     def collect(self):
         '''Collect & Return Prometheus Metrics'''
-        # Get Data
+        # Get Labels & Datas
         labels, datas = self._parse_results(self.run_speedtest())
         logging.info('Labels : %s.', dict(labels))
         logging.info('Datas : %s.', dict(datas))
