@@ -63,7 +63,7 @@ METRICS = [
      'description': 'Speedtest Download Bytes in bytes.',
      'type': 'gauge'},
     {'name': 'download_elapsed',
-     'description': 'Speedtest Download Elapsed in ms',
+     'description': 'Speedtest Download Elapsed in ms.',
      'type': 'gauge'},
     {'name': 'download_latency_iqm',
      'description': 'Speedtest Download IQM Latency in ms.',
