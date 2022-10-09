@@ -131,7 +131,7 @@ class SpeedtestCollector():
             logging.error(loads(exception.output)['message'])
             sys.exit(1)
         except JSONDecodeError as exception:
-            logging.error(exception)
+            logging.warning("Maybe License Acceptance Case. Restarting ...")
             sys.exit(1)
 
     @staticmethod
@@ -165,7 +165,7 @@ class SpeedtestCollector():
         datas['download_latency_low'] = res['download']['latency']['low']
         datas['download_latency_high'] = res['download']['latency']['high']
         datas['download_latency_jitter'] = res['download']['latency']['jitter']
-        datas['upload_bandwidth'] = res['download']['bandwidth']
+        datas['upload_bandwidth'] = res['upload']['bandwidth']
         datas['upload_bytes'] = res['upload']['bytes']
         datas['upload_elapsed'] = res['upload']['elapsed']
         datas['upload_latency_iqm'] = res['upload']['latency']['iqm']
