@@ -1,10 +1,11 @@
-#!/usr/bin/env python3
+#.!/usr/bin/env python3
 #coding: utf-8
 
 '''Speedtest Exporter'''
 
 from subprocess import check_output, STDOUT, CalledProcessError
 from json import loads
+from json.decoder import JSONDecodeError
 import sys
 import logging
 import os
@@ -115,7 +116,7 @@ class SpeedtestCollector():
         pass
 
     def run_speedtest(self):
-        ''' Run Speedtest & Return JSON Results or Exit '''
+        '''Run Speedtest & Return JSON Results or Exit'''
         try:
             speedtest_cmd = check_output(['speedtest',
                                           '--accept-license',
@@ -124,9 +125,13 @@ class SpeedtestCollector():
                                           'json'],
                                          stderr=STDOUT,
                                          text=True)
+            logging.debug(speedtest_cmd)
             return loads(speedtest_cmd)
         except CalledProcessError as exception:
             logging.error(loads(exception.output)['message'])
+            sys.exit(1)
+        except JSONDecodeError as exception:
+            logging.error(exception)
             sys.exit(1)
 
     @staticmethod
@@ -172,7 +177,7 @@ class SpeedtestCollector():
 
     def collect(self):
         '''Collect & Return Prometheus Metrics'''
-        # Get Data
+        # Get Labels & Datas
         labels, datas = self._parse_results(self.run_speedtest())
         logging.info('Labels : %s.', dict(labels))
         logging.info('Datas : %s.', dict(datas))
@@ -196,13 +201,13 @@ class SpeedtestCollector():
 
 # Main Function
 def main():
-    ''' Main Function '''
+    '''Main Function'''
     logging.info("Starting Speedtest Exporter on port %s.", SPEEDTEST_EXPORTER_PORT)
     logging.debug("SPEEDTEST_EXPORTER_PORT: %s.", SPEEDTEST_EXPORTER_PORT)
     logging.debug("SPEEDTEST_EXPORTER_NAME: %s.", SPEEDTEST_EXPORTER_NAME)
     # Start Prometheus HTTP Server
     start_http_server(SPEEDTEST_EXPORTER_PORT)
-    # Init HueMotionSensorCollector
+    # Init SpeedtestExporterCollector
     REGISTRY.register(SpeedtestCollector())
     # Loop Infinity
     while True:
