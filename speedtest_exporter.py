@@ -131,7 +131,7 @@ class SpeedtestCollector():
             logging.error(loads(exception.output)['message'])
             sys.exit(1)
         except JSONDecodeError as exception:
-            logging.error(exception)
+            logging.warning("Maybe License Acceptance Case. Restarting ...")
             sys.exit(1)
 
     @staticmethod
