@@ -14,7 +14,7 @@ ENV VIRTUAL_ENV="/speedtest-exporter"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN xargs -a /apk_packages apk add --no-cache --update \
     && python3 -m venv "${VIRTUAL_ENV}" \
-    && pip install --no-cache-dir --no-dependencies --no-binary :all: -r pip_packages.txt \
+    && pip install --no-cache-dir --no-dependencies --no-binary :all: -r pip_packages \
     && pip uninstall -y setuptools pip \
     && tar xzvf /tmp/speedtest.tar.gz -C /usr/local/bin \
     && useradd -l -u "${UID}" -U -s /bin/sh "${USERNAME}" \
