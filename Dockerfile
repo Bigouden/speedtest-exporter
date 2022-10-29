@@ -19,11 +19,12 @@ RUN xargs -a /apk_packages apk add --no-cache --update \
     && pip install --no-cache-dir --no-dependencies --no-binary :all: -r pip_packages \
     && pip uninstall -y setuptools pip \
     && tar xzvf /tmp/speedtest.tar.gz -C /usr/local/bin \
-    && useradd -l -u "${UID}" -U -s /bin/sh "${USERNAME}" \
+    && useradd -l -u "${UID}" -U -s /bin/sh -m "${USERNAME}" \
     && rm -rf \
         /root/.cache \
         /tmp/* \
         /var/cache/* \
+    && chown ${USERNAME}:${USERNAME} /usr/local/bin/speedtest \
     && chmod +x /usr/local/bin/speedtest
 COPY --chown=${USERNAME}:${USERNAME} --chmod=500 ${SCRIPT} ${VIRTUAL_ENV}
 COPY --chown=${USERNAME}:${USERNAME} --chmod=500 entrypoint.sh /
