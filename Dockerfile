@@ -4,6 +4,7 @@ ENV SPEEDTEST_HOST=""
 ENV SPEEDTEST_EXPORTER_PORT=8123
 ENV SPEEDTEST_EXPORTER_LOGLEVEL='INFO'
 ENV SPEEDTEST_EXPORTER_NAME='speedtest-exporter'
+ENV SCRIPT='speedtest_exporter.py'
 ENV USERNAME="exporter"
 ENV UID="1000"
 ENV GID="1000"
@@ -24,7 +25,7 @@ RUN xargs -a /apk_packages apk add --no-cache --update \
         /tmp/* \
         /var/cache/* \
     && chmod +x /usr/local/bin/speedtest
-COPY --chown=${USERNAME}:${USERNAME} --chmod=500 speedtest_exporter.py ${VIRTUAL_ENV}
+COPY --chown=${USERNAME}:${USERNAME} --chmod=500 ${SCRIPT} ${VIRTUAL_ENV}
 COPY --chown=${USERNAME}:${USERNAME} --chmod=500 entrypoint.sh /
 USER ${USERNAME}
 WORKDIR ${VIRTUAL_ENV}
