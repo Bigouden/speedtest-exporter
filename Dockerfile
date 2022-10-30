@@ -25,6 +25,8 @@ RUN xargs -a /apk_packages apk add --no-cache --update \
         /tmp/* \
         /var/cache/* \
     && chown ${USERNAME}:${USERNAME} /usr/local/bin/speedtest \
+    && touch /dev/speedtest \
+    && chown ${USERNAME}:${USERNAME} /dev/speedtest \
     && chmod +x /usr/local/bin/speedtest
 COPY --chown=${USERNAME}:${USERNAME} --chmod=500 ${SCRIPT} ${VIRTUAL_ENV}
 COPY --chown=${USERNAME}:${USERNAME} --chmod=500 entrypoint.sh /
