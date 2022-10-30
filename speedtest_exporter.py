@@ -1,4 +1,4 @@
-#.!/usr/bin/env python3
+#!/usr/bin/env python3
 #coding: utf-8
 
 '''Speedtest Exporter'''
@@ -11,6 +11,7 @@ import logging
 import os
 from time import sleep
 from collections import defaultdict
+import requests
 from prometheus_client.core import REGISTRY, Metric
 from prometheus_client import start_http_server, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
 
@@ -115,23 +116,56 @@ class SpeedtestCollector():
     def __init__(self):
         pass
 
+    @staticmethod
+    def _get_speedtest_server():
+        '''Get Speedtest Server'''
+        try:
+            speedtest_cmd = check_output(['speedtest',
+                                          '-L',
+                                          '-f',
+                                          'json'],
+                                         stderr=STDOUT,
+                                         text=True)
+            servers = loads(speedtest_cmd.splitlines()[-1])['servers']
+            logging.debug(servers)
+            for server in servers:
+                res = requests.get(f"http://{server['host']}:{server['port']}")
+                if res.status_code == 200:
+                    logging.debug("Server ID: %s (name: %s, host: %s, "
+                                  "port: %s, location: %s, country: %s)",
+                                  server['id'], server['name'], server['host'],
+                                  server['port'], server['location'], server['country'])
+                    return server['id']
+                logging.error("Unable to connect to Server ID: %s", server['id'])
+            logging.debug("None Speedtest Servers Found ! Exiting ...")
+            sys.exit(1)
+        except CalledProcessError as exception:
+            logging.error(loads(exception.output)['message'])
+            sys.exit(1)
+        except JSONDecodeError as exception:
+            logging.error(exception)
+            sys.exit(1)
+
     def run_speedtest(self):
         '''Run Speedtest & Return JSON Results or Exit'''
         try:
             speedtest_cmd = check_output(['speedtest',
                                           '--accept-license',
                                           '--accept-gdpr',
+                                          '-s',
+                                          str(self._get_speedtest_server()),
                                           '-f',
                                           'json'],
                                          stderr=STDOUT,
                                          text=True)
-            logging.debug(speedtest_cmd)
-            return loads(speedtest_cmd)
+            res = speedtest_cmd.splitlines()[-1]
+            logging.debug(res)
+            return loads(res)
         except CalledProcessError as exception:
             logging.error(loads(exception.output)['message'])
             sys.exit(1)
         except JSONDecodeError as exception:
-            logging.warning("Maybe License Acceptance Case. Restarting ...")
+            logging.error(exception)
             sys.exit(1)
 
     @staticmethod
