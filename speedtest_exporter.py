@@ -10,7 +10,9 @@ import sys
 import logging
 import os
 from time import sleep
+from datetime import datetime
 from collections import defaultdict
+import pytz
 import requests
 from prometheus_client.core import REGISTRY, Metric
 from prometheus_client import start_http_server, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
@@ -22,27 +24,40 @@ SPEEDTEST_EXPORTER_NAME = os.environ.get('SPEEDTEST_EXPORTER_NAME',
 # Exporter Log Level Definition
 SPEEDTEST_EXPORTER_LOGLEVEL = os.environ.get('SPEEDTEST_EXPORTER_LOGLEVEL',
                                              'INFO').upper()
+SPEEDTEST_EXPORTER_TZ = os.environ.get('TZ', 'Europe/Paris')
 
 # Logging Configuration
 try:
+    pytz.timezone(SPEEDTEST_EXPORTER_TZ)
+    logging.Formatter.converter = lambda *args: \
+                                  datetime.now(tz=pytz.timezone(SPEEDTEST_EXPORTER_TZ)).timetuple()
     logging.basicConfig(stream=sys.stdout,
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         datefmt='%d/%m/%Y %H:%M:%S',
                         level=SPEEDTEST_EXPORTER_LOGLEVEL)
+except pytz.exceptions.UnknownTimeZoneError:
+    logging.Formatter.converter = lambda *args: \
+                                  datetime.now(tz=pytz.timezone('Europe/Paris')).timetuple()
+    logging.basicConfig(stream=sys.stdout,
+                        format='%(asctime)s - %(levelname)s - %(message)s',
+                        datefmt='%d/%m/%Y %H:%M:%S',
+                        level='INFO')
+    logging.error("TZ invalid : %s !", SPEEDTEST_EXPORTER_TZ)
+    os._exit(1)
 except ValueError:
     logging.basicConfig(stream=sys.stdout,
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         datefmt='%d/%m/%Y %H:%M:%S',
                         level='INFO')
     logging.error("SPEEDTEST_EXPORTER_LOGLEVEL invalid !")
-    sys.exit(1)
+    os._exit(1)
 
 # Exporter Port Check
 try:
     SPEEDTEST_EXPORTER_PORT = int(os.environ.get('SPEEDTEST_EXPORTER_PORT', '8123'))
 except ValueError:
     logging.error("SPEEDTEST_EXPORTER_PORT must be int !")
-    sys.exit(1)
+    os._exit(1)
 
 # Metrics Definition
 METRICS = [
@@ -138,13 +153,13 @@ class SpeedtestCollector():
                     return server['id']
                 logging.error("Unable to connect to Server ID: %s", server['id'])
             logging.debug("None Speedtest Servers Found ! Exiting ...")
-            sys.exit(1)
+            os._exit(1)
         except CalledProcessError as exception:
             logging.error(loads(exception.output)['message'])
-            sys.exit(1)
+            os._exit(1)
         except JSONDecodeError as exception:
             logging.error(exception)
-            sys.exit(1)
+            os._exit(1)
 
     def run_speedtest(self):
         '''Run Speedtest & Return JSON Results or Exit'''
@@ -163,10 +178,10 @@ class SpeedtestCollector():
             return loads(res)
         except CalledProcessError as exception:
             logging.error(loads(exception.output)['message'])
-            sys.exit(1)
+            os._exit(1)
         except JSONDecodeError as exception:
             logging.error(exception)
-            sys.exit(1)
+            os._exit(1)
 
     @staticmethod
     def _parse_results(res):
