@@ -144,7 +144,7 @@ class SpeedtestCollector():
             servers = loads(speedtest_cmd.splitlines()[-1])['servers']
             logging.debug(servers)
             for server in servers:
-                res = requests.get(f"http://{server['host']}:{server['port']}")
+                res = requests.get(f"http://{server['host']}:{server['port']}") # nosemgrep
                 if res.status_code == 200:
                     logging.debug("Server ID: %s (name: %s, host: %s, "
                                   "port: %s, location: %s, country: %s)",
