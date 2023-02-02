@@ -154,15 +154,12 @@ class SpeedtestCollector():
                 logging.error("Unable to connect to Server ID: %s", server['id'])
             logging.debug("None Speedtest Servers Found ! Exiting ...")
             os._exit(1)
-            return None
         except CalledProcessError as exception:
             logging.error(loads(exception.output)['message'])
             os._exit(1)
-            return None
         except JSONDecodeError as exception:
             logging.error(exception)
             os._exit(1)
-            return None
 
     def run_speedtest(self):
         '''Run Speedtest & Return JSON Results or Exit'''
@@ -182,11 +179,9 @@ class SpeedtestCollector():
         except CalledProcessError as exception:
             logging.error(loads(exception.output)['message'])
             os._exit(1)
-            return None
         except JSONDecodeError as exception:
             logging.error(exception)
             os._exit(1)
-            return None
 
     @staticmethod
     def _parse_results(res):
