@@ -33,5 +33,5 @@ COPY --chown=${USERNAME}:${USERNAME} --chmod=500 entrypoint.sh /
 USER ${USERNAME}
 WORKDIR ${VIRTUAL_ENV}
 EXPOSE ${SPEEDTEST_EXPORTER_PORT}
-HEALTHCHECK CMD nc -vz localhost ${SPEEDTEST_EXPORTER_PORT} || exit 1
+HEALTHCHECK CMD nc -vz localhost ${SPEEDTEST_EXPORTER_PORT} || exit 1 # nosemgrep
 ENTRYPOINT ["/entrypoint.sh"]
