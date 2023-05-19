@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 LABEL maintainer="Thomas GUIRRIEC <thomas@guirriec.fr>"
 ENV SPEEDTEST_HOST=""
 ENV SPEEDTEST_EXPORTER_PORT=8123
@@ -11,6 +11,7 @@ ENV GID="1000"
 COPY apk_packages /
 COPY pip_packages /
 ENV VIRTUAL_ENV="/dockerhub-limit-exporter"
+#checkov:skip=CKV_DOCKER_4
 ADD https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz /tmp/speedtest.tar.gz
 ENV VIRTUAL_ENV="/speedtest-exporter"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"

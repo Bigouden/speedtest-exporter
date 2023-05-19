@@ -22,7 +22,7 @@ speedtest_ping_low{interface_external_ip="83.197.193.12",interface_internal_ip="
 # HELP speedtest_ping_high Speedtest Ping High in ms.
 # TYPE speedtest_ping_high gauge
 speedtest_ping_high{interface_external_ip="83.197.193.12",interface_internal_ip="172.18.0.24",interface_is_vpn="False",interface_mac_address="02:42:AC:12:00:18",interface_name="eth0",isp="Orange",result_id="c812fcce-1ca1-4909-96f2-4a35475c8418",result_persisted="True",result_url="https://www.speedtest.net/result/c/c812fcce-1ca1-4909-96f2-4a35475c8418",server_country="France",server_host="rennes3.speedtest.orange.fr",server_id="23282",server_ip="80.12.26.64",server_location="Rennes",server_name="ORANGE FRANCE",server_port="8080"} 1.913
-# HELP speedtest_download_bandwidth Speedtest Download Bandwith in bytes per second (B/s).
+# HELP speedtest_download_bandwidth Speedtest Download Bandwidth in bytes per second (B/s).
 # TYPE speedtest_download_bandwidth gauge
 speedtest_download_bandwidth{interface_external_ip="83.197.193.12",interface_internal_ip="172.18.0.24",interface_is_vpn="False",interface_mac_address="02:42:AC:12:00:18",interface_name="eth0",isp="Orange",result_id="c812fcce-1ca1-4909-96f2-4a35475c8418",result_persisted="True",result_url="https://www.speedtest.net/result/c/c812fcce-1ca1-4909-96f2-4a35475c8418",server_country="France",server_host="rennes3.speedtest.orange.fr",server_id="23282",server_ip="80.12.26.64",server_location="Rennes",server_name="ORANGE FRANCE",server_port="8080"} 2.780559e+07
 # HELP speedtest_download_bytes Speedtest Download Bytes in bytes.
@@ -43,7 +43,7 @@ speedtest_download_latency_high{interface_external_ip="83.197.193.12",interface_
 # HELP speedtest_download_latency_jitter Speedtest Download Jitter Latency in ms.
 # TYPE speedtest_download_latency_jitter gauge
 speedtest_download_latency_jitter{interface_external_ip="83.197.193.12",interface_internal_ip="172.18.0.24",interface_is_vpn="False",interface_mac_address="02:42:AC:12:00:18",interface_name="eth0",isp="Orange",result_id="c812fcce-1ca1-4909-96f2-4a35475c8418",result_persisted="True",result_url="https://www.speedtest.net/result/c/c812fcce-1ca1-4909-96f2-4a35475c8418",server_country="France",server_host="rennes3.speedtest.orange.fr",server_id="23282",server_ip="80.12.26.64",server_location="Rennes",server_name="ORANGE FRANCE",server_port="8080"} 4.139
-# HELP speedtest_upload_bandwidth Speedtest Upload Bandwith in bytes per second (B/s).
+# HELP speedtest_upload_bandwidth Speedtest Upload Bandwidth in bytes per second (B/s).
 # TYPE speedtest_upload_bandwidth gauge
 speedtest_upload_bandwidth{interface_external_ip="83.197.193.12",interface_internal_ip="172.18.0.24",interface_is_vpn="False",interface_mac_address="02:42:AC:12:00:18",interface_name="eth0",isp="Orange",result_id="c812fcce-1ca1-4909-96f2-4a35475c8418",result_persisted="True",result_url="https://www.speedtest.net/result/c/c812fcce-1ca1-4909-96f2-4a35475c8418",server_country="France",server_host="rennes3.speedtest.orange.fr",server_id="23282",server_ip="80.12.26.64",server_location="Rennes",server_name="ORANGE FRANCE",server_port="8080"} 2.7167284e+07
 # HELP speedtest_upload_bytes Speedtest Upload Bytes in bytes.
