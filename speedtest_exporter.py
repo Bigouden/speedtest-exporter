@@ -317,41 +317,44 @@ class SpeedtestCollector:
     def _parse_results(res):
         labels = defaultdict(dict)
         datas = defaultdict(dict)
-        labels["isp"] = res["isp"]
-        labels["interface_name"] = res["interface"]["name"]
-        labels["interface_internal_ip"] = res["interface"]["internalIp"]
-        labels["interface_external_ip"] = res["interface"]["externalIp"]
-        labels["interface_mac_address"] = res["interface"]["macAddr"]
-        labels["interface_is_vpn"] = str(res["interface"]["isVpn"])
-        labels["server_id"] = str(res["server"]["id"])
-        labels["server_host"] = res["server"]["host"]
-        labels["server_port"] = str(res["server"]["port"])
-        labels["server_name"] = res["server"]["name"]
-        labels["server_location"] = res["server"]["location"]
-        labels["server_country"] = res["server"]["country"]
-        labels["server_ip"] = res["server"]["ip"]
-        labels["result_id"] = res["result"]["id"]
-        labels["result_url"] = res["result"]["url"]
-        labels["result_persisted"] = str(res["result"]["persisted"])
-        datas["ping_jitter"] = res["ping"]["jitter"]
-        datas["ping_latency"] = res["ping"]["latency"]
-        datas["ping_low"] = res["ping"]["low"]
-        datas["ping_high"] = res["ping"]["high"]
-        datas["download_bandwidth"] = res["download"]["bandwidth"]
-        datas["download_bytes"] = res["download"]["bytes"]
-        datas["download_elapsed"] = res["download"]["elapsed"]
-        datas["download_latency_iqm"] = res["download"]["latency"]["iqm"]
-        datas["download_latency_low"] = res["download"]["latency"]["low"]
-        datas["download_latency_high"] = res["download"]["latency"]["high"]
-        datas["download_latency_jitter"] = res["download"]["latency"]["jitter"]
-        datas["upload_bandwidth"] = res["upload"]["bandwidth"]
-        datas["upload_bytes"] = res["upload"]["bytes"]
-        datas["upload_elapsed"] = res["upload"]["elapsed"]
-        datas["upload_latency_iqm"] = res["upload"]["latency"]["iqm"]
-        datas["upload_latency_low"] = res["upload"]["latency"]["low"]
-        datas["upload_latency_high"] = res["upload"]["latency"]["high"]
-        datas["upload_latency_jitter"] = res["upload"]["latency"]["jitter"]
-        datas["packet_loss"] = res["packetLoss"]
+        try:
+            labels["isp"] = res["isp"]
+            labels["interface_name"] = res["interface"]["name"]
+            labels["interface_internal_ip"] = res["interface"]["internalIp"]
+            labels["interface_external_ip"] = res["interface"]["externalIp"]
+            labels["interface_mac_address"] = res["interface"]["macAddr"]
+            labels["interface_is_vpn"] = str(res["interface"]["isVpn"])
+            labels["server_id"] = str(res["server"]["id"])
+            labels["server_host"] = res["server"]["host"]
+            labels["server_port"] = str(res["server"]["port"])
+            labels["server_name"] = res["server"]["name"]
+            labels["server_location"] = res["server"]["location"]
+            labels["server_country"] = res["server"]["country"]
+            labels["server_ip"] = res["server"]["ip"]
+            labels["result_id"] = res["result"]["id"]
+            labels["result_url"] = res["result"]["url"]
+            labels["result_persisted"] = str(res["result"]["persisted"])
+            datas["ping_jitter"] = res["ping"]["jitter"]
+            datas["ping_latency"] = res["ping"]["latency"]
+            datas["ping_low"] = res["ping"]["low"]
+            datas["ping_high"] = res["ping"]["high"]
+            datas["download_bandwidth"] = res["download"]["bandwidth"]
+            datas["download_bytes"] = res["download"]["bytes"]
+            datas["download_elapsed"] = res["download"]["elapsed"]
+            datas["download_latency_iqm"] = res["download"]["latency"]["iqm"]
+            datas["download_latency_low"] = res["download"]["latency"]["low"]
+            datas["download_latency_high"] = res["download"]["latency"]["high"]
+            datas["download_latency_jitter"] = res["download"]["latency"]["jitter"]
+            datas["upload_bandwidth"] = res["upload"]["bandwidth"]
+            datas["upload_bytes"] = res["upload"]["bytes"]
+            datas["upload_elapsed"] = res["upload"]["elapsed"]
+            datas["upload_latency_iqm"] = res["upload"]["latency"]["iqm"]
+            datas["upload_latency_low"] = res["upload"]["latency"]["low"]
+            datas["upload_latency_high"] = res["upload"]["latency"]["high"]
+            datas["upload_latency_jitter"] = res["upload"]["latency"]["jitter"]
+            datas["packet_loss"] = res["packetLoss"]
+        except KeyError:
+            pass
         return labels, datas
 
     def collect(self):
