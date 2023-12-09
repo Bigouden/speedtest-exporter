@@ -3,7 +3,7 @@
 ARG ALPINE_VERSION="3.19"
 
 FROM alpine:${ALPINE_VERSION} AS builder
-COPY apk_packages pip_packages /tmp/
+COPY --link apk_packages pip_packages /tmp/
 # hadolint ignore=DL3018
 RUN --mount=type=cache,id=builder_apk_cache,target=/var/cache/apk \
     apk add gettext-envsubst
@@ -23,7 +23,7 @@ ENV VIRTUAL_ENV="/dockerhub-limit-exporter"
 #checkov:skip=CKV_DOCKER_4
 ENV VIRTUAL_ENV="/speedtest-exporter"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-# hadolint ignore=DL3013,DL3018,DL3042
+# hadolint ignore=DL3013,DL3018,DL3042,SC2006
 RUN --mount=type=bind,from=builder,source=/usr/bin/envsubst,target=/usr/bin/envsubst \
     --mount=type=bind,from=builder,source=/usr/lib/libintl.so.8,target=/usr/lib/libintl.so.8 \
     --mount=type=bind,from=builder,source=/tmp,target=/tmp \
@@ -40,8 +40,8 @@ RUN --mount=type=bind,from=builder,source=/usr/bin/envsubst,target=/usr/bin/envs
     && touch /dev/speedtest \
     && chown "${USERNAME}":"${USERNAME}" /dev/speedtest \
     && chmod +x /usr/local/bin/speedtest
-COPY --chmod=755 ${SCRIPT} ${VIRTUAL_ENV}
-COPY --chmod=755 entrypoint.sh /
+COPY --link --chmod=755 ${SCRIPT} ${VIRTUAL_ENV}
+COPY --link --chmod=755 entrypoint.sh /
 USER ${USERNAME}
 WORKDIR ${VIRTUAL_ENV}
 EXPOSE ${SPEEDTEST_EXPORTER_PORT}
