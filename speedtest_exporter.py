@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # pyright: reportMissingImports=false, reportGeneralTypeIssues=false
+# pyright: reportArgumentType=false
 
 """Speedtest Exporter"""
 
